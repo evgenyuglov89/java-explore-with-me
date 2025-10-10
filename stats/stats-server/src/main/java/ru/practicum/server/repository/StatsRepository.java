@@ -14,9 +14,9 @@ public interface StatsRepository extends JpaRepository<Stats, Integer> {
     Optional<Stats> findByIpAndUriAndApp(String ip, String uri, String app);
 
     @Query("""
-        SELECT s 
-        FROM Stats s 
-        WHERE s.timestamp BETWEEN :start AND :end 
+        SELECT s
+        FROM Stats s
+        WHERE s.timestamp BETWEEN :start AND :end
           AND s.uri IN :uris
         """)
     List<Stats> findStatsBetweenDates(@Param("start") LocalDateTime start,
