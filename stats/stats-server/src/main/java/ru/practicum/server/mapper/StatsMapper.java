@@ -28,13 +28,13 @@ public class StatsMapper {
                 .build();
     }
 
-    public Stats fromStatisticsDto(EndpointHitDto statsDto) {
-        return Stats
-                .builder()
-                .app(statsDto.getApp())
-                .uri(statsDto.getUri())
-                .timestamp(statsDto.getTimestamp())
-                .ip(statsDto.getIp())
+    public Stats fromStatisticsDto(EndpointHitDto dto) {
+        return Stats.builder()
+                .app(dto.getApp())
+                .uri(dto.getUri())
+                .ip(dto.getIp())
+                .timestamp(dto.getTimestamp())
+                .hits(1L)
                 .build();
     }
 }

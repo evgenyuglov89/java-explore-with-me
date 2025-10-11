@@ -36,26 +36,20 @@ public class StatsService {
             return mapper.toStatisticsDto(existing);
         }
 
-        stat.setHits(1);
+        stat.setHits(1L);
         stat.setTimestamp(LocalDateTime.now());
         repository.save(stat);
 
         return mapper.toStatisticsDto(stat);
     }
 
-    public List<ViewStatsDto> getStats(LocalDateTime start,
-                                       LocalDateTime end,
-                                       String[] uris,
-                                       boolean unique) {
-
-        List<String> uriList = Arrays.asList(uris);
-
-        List<Stats> stats = unique
-                ? repository.findUniqueStatsBetweenDates(start, end, uriList)
-                : repository.findStatsBetweenDates(start, end, uriList);
-
-        return stats.stream()
-                .map(mapper::toStatForListDto)
-                .collect(Collectors.toList());
+    public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        if (uris == null || uris.isEmpty()) {
+            return repository.findAllWithoutUris(start, end);
+        }
+        if (unique) {
+            return repository.findAllUnique(start, end, uris);
+        }
+        return repository.findAllNotUnique(start, end, uris);
     }
 }

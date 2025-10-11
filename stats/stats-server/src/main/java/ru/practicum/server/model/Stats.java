@@ -32,5 +32,11 @@ public class Stats {
     @Column(name = "time")
     private LocalDateTime timestamp;
 
-    private int hits;
+    private Long hits;
+
+    public Stats(String app, String uri, Long hits) {
+        this.app = app;
+        this.uri = uri;
+        this.hits = hits;
+    }
 }

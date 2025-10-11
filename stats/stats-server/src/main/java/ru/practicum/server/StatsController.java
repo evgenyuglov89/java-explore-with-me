@@ -1,5 +1,7 @@
 package ru.practicum.server;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStatsDto;
@@ -11,11 +13,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/stats")
 public class StatsController {
 
-    final StatsService service;
+    private final StatsService service;
 
+    @Autowired
     public StatsController(StatsService service) {
         this.service = service;
     }
@@ -23,26 +25,26 @@ public class StatsController {
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
     public EndpointHitDto create(@RequestBody EndpointHitDto stats) {
+        if (stats.getTimestamp() == null) {
+            stats.setTimestamp(LocalDateTime.now());
+        }
         return service.create(stats);
     }
 
-    @GetMapping
-    public List<ViewStatsDto> getStats(@RequestParam("start") LocalDateTime start,
-                                       @RequestParam("end") LocalDateTime end,
-                                       @RequestParam(value = "uris", required = false) String[] uris,
-                                       @RequestParam(value = "unique", defaultValue = "false") boolean unique) {
-
-        validateRequestParams(start, end, uris);
-
+    @GetMapping("/stats")
+    public List<ViewStatsDto> getStats(
+            @RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+            @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
+            @RequestParam(value = "uris", required = false) List<String> uris,
+            @RequestParam(value = "unique", defaultValue = "false") boolean unique
+    ) {
+        validateRequestParams(start, end);
         return service.getStats(start, end, uris, unique);
     }
 
-    private void validateRequestParams(LocalDateTime start, LocalDateTime end, String[] uris) {
+    private void validateRequestParams(LocalDateTime start, LocalDateTime end) {
         if (start == null || end == null || start.isAfter(end)) {
             throw new StatsNotFoundException("Некорректный диапазон времени: start должен быть раньше end");
-        }
-        if (uris == null || uris.length == 0) {
-            throw new StatsNotFoundException("Список URI не может быть пустым");
         }
     }
 }
