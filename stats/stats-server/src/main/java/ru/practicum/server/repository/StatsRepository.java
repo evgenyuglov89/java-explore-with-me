@@ -8,12 +8,8 @@ import ru.practicum.server.model.Stats;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface StatsRepository extends JpaRepository<Stats, Integer> {
-
-    Optional<Stats> findByIpAndUriAndApp(String ip, String uri, String app);
-
     @Query("""
 			SELECT new ru.practicum.dto.ViewStatsDto(s.app, s.uri, COUNT(s.ip))
             FROM Stats s

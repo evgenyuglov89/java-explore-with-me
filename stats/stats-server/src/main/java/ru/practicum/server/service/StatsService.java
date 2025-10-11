@@ -24,18 +24,6 @@ public class StatsService {
     public EndpointHitDto create(EndpointHitDto dto) {
         Stats stat = mapper.fromStatisticsDto(dto);
 
-        Stats existing = repository.findByIpAndUriAndApp(stat.getIp(), stat.getUri(), stat.getApp())
-                .orElse(null);
-
-        if (existing != null) {
-            existing.setHits(existing.getHits() + 1);
-            existing.setTimestamp(LocalDateTime.now());
-            repository.save(existing);
-            return mapper.toStatisticsDto(existing);
-        }
-
-        stat.setHits(1L);
-        stat.setTimestamp(LocalDateTime.now());
         repository.save(stat);
 
         return mapper.toStatisticsDto(stat);
