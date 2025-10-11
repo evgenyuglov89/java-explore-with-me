@@ -10,9 +10,7 @@ import ru.practicum.server.mapper.StatsMapper;
 import ru.practicum.server.repository.StatsRepository;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
