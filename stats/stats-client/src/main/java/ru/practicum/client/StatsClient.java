@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import ru.practicum.dto.EndpointHitDto;
-import ru.practicum.dto.ViewStatsDto;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
