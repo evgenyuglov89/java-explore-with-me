@@ -1,31 +1,25 @@
 package ru.practicum.main_service.event.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.main_service.category.dto.CategoryDto;
 import ru.practicum.main_service.event.model.EventState;
-import ru.practicum.main_service.location.model.Location;
 import ru.practicum.main_service.user.dto.UserDto;
 
 import java.time.LocalDateTime;
-
-import static org.hibernate.type.descriptor.java.JdbcTimeJavaType.TIME_FORMAT;
 
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventDto {
+public class EventShortDto {
     private int id;
 
     private String title;
 
     private String annotation;
-
-    private String description;
 
     private CategoryDto category;
 
@@ -33,24 +27,11 @@ public class EventDto {
 
     private boolean paid;
 
-    @JsonFormat(pattern = TIME_FORMAT)
-    private LocalDateTime createdOn;
-
-    @JsonFormat(pattern = TIME_FORMAT)
-    private LocalDateTime publishedOn;
-
-    @JsonFormat(pattern = TIME_FORMAT)
     private LocalDateTime eventDate;
+
+    private int views;
 
     private int confirmedRequests;
 
-    private Location location;
-
-    private int participantLimit;
-
-    private boolean requestModeration;
-
     private EventState state;
-
-    private int views;
 }

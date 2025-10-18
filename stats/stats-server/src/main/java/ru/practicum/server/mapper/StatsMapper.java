@@ -34,7 +34,7 @@ public class StatsMapper {
                 .uri(dto.getUri())
                 .ip(dto.getIp())
                 .timestamp(dto.getTimestamp())
-                .hits(1L)
+                .hits(1)
                 .build();
     }
 }

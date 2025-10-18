@@ -11,10 +11,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import ru.practicum.dto.EndpointHitDto;
+import ru.practicum.dto.ViewStatsDto;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,8 @@ public class StatsClient {
     private final RestTemplate restTemplate;
     private final String baseUrl;
     private static final String APP_NAME = "ewm-main-service";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public StatsClient(
             RestTemplateBuilder builder,
@@ -42,13 +46,18 @@ public class StatsClient {
     }
 
     public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
+        validateDateRange(start, end);
+
         Map<String, Object> params = Map.of(
-                "start", encode(start.toString()),
-                "end", encode(end.toString()),
+                "start", formatDate(start),
+                "end", formatDate(end),
                 "uris", uris,
                 "unique", unique
         );
-        return sendRequest(HttpMethod.GET, "/stats?start={start}&end={end}&uris={uris}&unique={unique}", params, null);
+
+        String url = "/stats?start={start}&end={end}&uris={uris}&unique={unique}";
+
+        return sendRequest(HttpMethod.GET, url, params, null);
     }
 
     private <T> ResponseEntity<Object> sendRequest(HttpMethod method, String path,
@@ -94,5 +103,15 @@ public class StatsClient {
         }
         ResponseEntity.BodyBuilder builder = ResponseEntity.status(response.getStatusCode());
         return response.hasBody() ? builder.body(response.getBody()) : builder.build();
+    }
+
+    private String formatDate(LocalDateTime dateTime) {
+        return dateTime.format(DATE_TIME_FORMATTER);
+    }
+
+    private void validateDateRange(LocalDateTime start, LocalDateTime end) {
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("Дата начала не может быть позже даты окончания");
+        }
     }
 }
