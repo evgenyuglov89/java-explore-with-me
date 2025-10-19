@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.practicum.client.StatsClient;
@@ -12,6 +13,7 @@ import ru.practicum.dto.ViewStatsDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventStatsService {
@@ -22,7 +24,7 @@ public class EventStatsService {
         try {
             statsClient.postStats(request);
         } catch (Exception e) {
-            new Exception("Не удалось отправить статистику.");
+            log.warn("Не удалось отправить статистику: {}", e.getMessage(), e);
         }
     }
 
