@@ -53,7 +53,7 @@ public class AdminController {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser( @RequestBody UserDto userDto) {
+    public User addUser(@RequestBody UserDto userDto) {
         return service.addUser(userDto);
     }
 

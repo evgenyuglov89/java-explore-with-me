@@ -5,7 +5,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.practicum.main_service.admin.service.AdminService;
 import ru.practicum.main_service.admin.service.EventAdminService;
 import ru.practicum.main_service.event.dto.EventDto;
 import ru.practicum.main_service.event.dto.EventSearchFilter;
