@@ -10,8 +10,6 @@ import ru.practicum.main_service.location.model.Location;
 
 import java.time.LocalDateTime;
 
-import static org.hibernate.type.descriptor.java.JdbcTimeJavaType.TIME_FORMAT;
-
 @Data
 @Builder
 @AllArgsConstructor
