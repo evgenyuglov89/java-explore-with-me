@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.main_service.exeption.IncorrectRequestException;
 import ru.practicum.main_service.request.dto.RequestDto;
 import ru.practicum.main_service.request.service.RequestService;
 
@@ -19,7 +20,10 @@ public class RequestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RequestDto addRequest(@PathVariable int userId, @RequestParam int eventId) {
+    public RequestDto addRequest(@PathVariable int userId, @RequestParam(required = false) Integer eventId) {
+        if (eventId == null) {
+            throw new IncorrectRequestException("Required request parameter 'eventId' is missing");
+        }
         return requestService.addRequest(userId, eventId);
     }
 

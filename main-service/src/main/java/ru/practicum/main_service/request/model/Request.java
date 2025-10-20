@@ -30,7 +30,7 @@ public class Request {
     @JoinColumn(name = "requester_id")
     private User requester;
 
-    @Column(name = "created_on")
+    @Column(name = "created")
     private LocalDateTime created;
 
     @Enumerated(EnumType.STRING)

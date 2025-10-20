@@ -2,11 +2,13 @@ package ru.practicum.main_service.exeption;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -49,6 +51,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, WebRequest request) {
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "Ошибка сервера", ex, request);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex, WebRequest request) {
+        String messages = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(err -> String.format("Поле '%s': %s", err.getField(), err.getDefaultMessage()))
+                .collect(Collectors.joining("; "));
+
+        return buildResponseEntity(
+                HttpStatus.BAD_REQUEST,
+                "Ошибка валидации данных",
+                new IllegalArgumentException(messages),
+                request
+        );
     }
 
     private ResponseEntity<ErrorResponse> buildResponseEntity(HttpStatus status, String error, Exception ex,

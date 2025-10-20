@@ -1,5 +1,6 @@
 package ru.practicum.main_service.compilation.dto;
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class CompilationDto {
 
     private Boolean pinned;
 
+    @Size(max = 50)
     private String title;
 
     private List<EventShortDto> events;

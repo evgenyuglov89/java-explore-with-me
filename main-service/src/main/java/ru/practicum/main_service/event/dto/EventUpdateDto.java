@@ -2,6 +2,7 @@ package ru.practicum.main_service.event.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class EventUpdateDto {
     @JsonFormat(pattern = TIME_FORMAT)
     private LocalDateTime eventDate;
 
+    @PositiveOrZero
     private int participantLimit;
 
     private Location location;

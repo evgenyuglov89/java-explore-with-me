@@ -17,8 +17,6 @@ import ru.practicum.main_service.user.model.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.hibernate.type.descriptor.java.JdbcTimeJavaType.TIME_FORMAT;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -68,9 +66,9 @@ public class AdminController {
                                     @RequestParam(required = false) List<String> states,
                                     @RequestParam(required = false) List<Integer> categories,
                                     @RequestParam(required = false)
-                                    @DateTimeFormat(pattern = TIME_FORMAT) LocalDateTime rangeStart,
+                                    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
                                     @RequestParam(required = false)
-                                    @DateTimeFormat(pattern = TIME_FORMAT) LocalDateTime rangeEnd,
+                                    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
                                     @RequestParam(defaultValue = "0") int from,
                                     @RequestParam(defaultValue = "10") int size) {
         return service.getEvents(users, states, categories, rangeStart, rangeEnd, from, size);

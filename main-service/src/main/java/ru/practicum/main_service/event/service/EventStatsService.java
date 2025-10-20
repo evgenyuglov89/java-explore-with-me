@@ -21,6 +21,7 @@ public class EventStatsService {
     private final StatsClient statsClient;
 
     public void saveStats(HttpServletRequest request) {
+        log.info("Request: ", request);
         try {
             statsClient.postStats(request);
         } catch (Exception e) {

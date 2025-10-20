@@ -1,6 +1,7 @@
 package ru.practicum.main_service.compilation.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +22,9 @@ public class Compilation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Size(max = 50)
     private String title;
+
     @ManyToMany
     @JoinTable(
             name = "compilation_events",

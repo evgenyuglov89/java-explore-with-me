@@ -59,6 +59,14 @@ public class StatsClient {
         return sendRequest(HttpMethod.GET, url, params, null);
     }
 
+//    protected ResponseEntity<Object> get(@Nullable Map<String, Object> parameters) {
+//        return sendRequest(
+//                HttpMethod.GET,
+//                "/stats?start={start}&end={end}&uris={uris}&unique={unique}",
+//                parameters,
+//                null);
+//    }
+
     private <T> ResponseEntity<Object> sendRequest(HttpMethod method, String path,
                                                    @Nullable Map<String, Object> params, @Nullable T body) {
         HttpEntity<T> entity = new HttpEntity<>(body, buildDefaultHeaders());

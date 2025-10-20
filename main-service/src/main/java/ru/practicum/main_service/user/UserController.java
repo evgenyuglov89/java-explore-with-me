@@ -1,5 +1,6 @@
 package ru.practicum.main_service.user;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +28,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EventDto createEvent(@PathVariable int userId, @RequestBody EventCreateDto dto) {
+    public EventDto createEvent(@PathVariable int userId, @Valid @RequestBody EventCreateDto dto) {
         return userService.createEvent(userId, dto);
     }
 

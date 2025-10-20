@@ -1,6 +1,8 @@
 package ru.practicum.main_service.event.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,10 +25,13 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotEmpty
     private String title;
 
+    @NotEmpty
     private String annotation;
 
+    @NotEmpty
     private String description;
 
     @ManyToOne
@@ -37,6 +42,7 @@ public class Event {
     @JoinColumn(name = "initiator_id")
     private User initiator;
 
+    @NotNull
     @Column(name = "paid")
     private boolean paid;
 
@@ -61,6 +67,7 @@ public class Event {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @NotNull
     @Column(name = "request_moderation")
     private boolean requestModeration;
 
