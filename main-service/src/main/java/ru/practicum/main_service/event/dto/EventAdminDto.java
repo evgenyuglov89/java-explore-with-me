@@ -1,6 +1,7 @@
 package ru.practicum.main_service.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +11,6 @@ import ru.practicum.main_service.event.model.StateAdminAction;
 import ru.practicum.main_service.location.dto.LocationDto;
 
 import java.time.LocalDateTime;
-
-import static org.hibernate.type.descriptor.java.JdbcTimeJavaType.TIME_FORMAT;
 
 @Builder
 @NoArgsConstructor
@@ -33,9 +32,10 @@ public class EventAdminDto {
 
     private Boolean paid;
 
-    @JsonFormat(pattern = TIME_FORMAT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
+    @PositiveOrZero
     private Integer participantLimit;
 
     private Boolean requestModeration;

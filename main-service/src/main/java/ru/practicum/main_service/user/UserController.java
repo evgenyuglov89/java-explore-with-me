@@ -47,7 +47,7 @@ public class UserController {
     @PatchMapping("/{eventId}")
     public EventDto updateEvent(@PathVariable int userId,
                                 @PathVariable int eventId,
-                                @RequestBody EventUpdateDto dto) {
+                                @RequestBody @Valid EventUpdateDto dto) {
         return userService.changeEvent(userId, eventId, dto);
     }
 
