@@ -27,7 +27,7 @@ public class AdminController {
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public Category addCategory(@RequestBody CategoryDto categoryDto) {
+    public Category addCategory(@RequestBody @Valid CategoryDto categoryDto) {
         return service.addCategory(categoryDto);
     }
 
@@ -39,7 +39,7 @@ public class AdminController {
 
     @PatchMapping("/categories/{catId}")
     public Category editCategory(@PathVariable int catId,
-                                  @RequestBody CategoryDto categoryDto) {
+                                  @RequestBody @Valid CategoryDto categoryDto) {
         return service.editCategory(catId, categoryDto);
     }
 
@@ -52,7 +52,7 @@ public class AdminController {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestBody UserDto userDto) {
+    public User addUser(@RequestBody @Valid UserDto userDto) {
         return service.addUser(userDto);
     }
 
@@ -89,13 +89,13 @@ public class AdminController {
 
     @PostMapping("/compilations")
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto addCompilation(@RequestBody UpdateCompilationDto dto) {
+    public CompilationDto addCompilation(@RequestBody @Valid UpdateCompilationDto dto) {
         return service.addCompilation(dto);
     }
 
     @PatchMapping("/compilations/{compId}")
     public CompilationDto updateCompilation(@PathVariable int compId,
-                                               @RequestBody UpdateCompilationDto dto) {
+                                               @RequestBody @Valid UpdateCompilationDto dto) {
         return service.updateCompilation(compId, dto);
     }
 }

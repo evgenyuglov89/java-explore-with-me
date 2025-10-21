@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 public class UserDto {
     @NotNull
     @Email
-    @Size(max = 254)
+    @Size(min = 6, max = 254)
     private String email;
 
     @NotNull
     @NotBlank
-    @Size(max = 250)
+    @Size(min = 2, max = 250)
     private String name;
 }

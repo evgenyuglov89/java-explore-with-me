@@ -3,6 +3,7 @@ package ru.practicum.main_service.event.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,24 +13,25 @@ import ru.practicum.main_service.location.model.Location;
 
 import java.time.LocalDateTime;
 
-import static org.hibernate.type.descriptor.java.JdbcTimeJavaType.TIME_FORMAT;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventUpdateDto {
+    @Size(min = 3, max = 120)
     private String title;
 
+    @Size(min = 20, max = 2000)
     private String annotation;
 
+    @Size(min = 20, max = 7000)
     private String description;
 
     private int category;
 
     private Boolean paid;
 
-    @JsonFormat(pattern = TIME_FORMAT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
     @PositiveOrZero
