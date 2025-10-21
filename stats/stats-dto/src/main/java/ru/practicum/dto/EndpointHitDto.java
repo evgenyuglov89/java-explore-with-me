@@ -14,7 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class EndpointHitDto {
     private String app;
+
     private String uri;
+
     private String ip;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

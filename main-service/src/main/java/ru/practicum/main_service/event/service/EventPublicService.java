@@ -29,7 +29,6 @@ public class EventPublicService {
     private final EventAdminService adminService;
     private final EventStatsService statsService;
 
-    @Transactional
     public EventDto getEventById(int id, HttpServletRequest request) {
         statsService.saveStats(request);
 
@@ -37,6 +36,7 @@ public class EventPublicService {
                 .orElseThrow(() -> new EventNotFoundException("Событие с id " + id + " не найдено"));
 
         if (event.getState() != EventState.PUBLISHED) {
+
             throw new EventNotFoundException("Событие с id " + id + " не опубликовано");
         }
 

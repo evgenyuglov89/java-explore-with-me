@@ -14,8 +14,6 @@ import ru.practicum.main_service.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
-import static org.hibernate.type.descriptor.java.JdbcTimeJavaType.TIME_FORMAT;
-
 @Builder
 @Data
 @NoArgsConstructor
@@ -43,15 +41,15 @@ public class EventDto {
     private boolean paid;
 
     @NotNull
-    @JsonFormat(pattern = TIME_FORMAT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdOn;
 
     @NotNull
-    @JsonFormat(pattern = TIME_FORMAT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime publishedOn;
 
     @NotNull
-    @JsonFormat(pattern = TIME_FORMAT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
     private int confirmedRequests;

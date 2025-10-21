@@ -23,7 +23,6 @@ import java.util.Map;
 public class StatsClient {
 
     private final RestTemplate restTemplate;
-    private final String baseUrl;
     private static final String APP_NAME = "ewm-main-service";
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -32,16 +31,15 @@ public class StatsClient {
             RestTemplateBuilder builder,
             @Value("${stats.server.url:http://localhost:9090}") String baseUrl
     ) {
-        this.baseUrl = baseUrl;
         this.restTemplate = builder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(baseUrl))
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                 .build();
     }
 
-    public ResponseEntity<Object> postStats(HttpServletRequest request) {
+    public void postStats(HttpServletRequest request) {
         EndpointHitDto dto = buildStatisticsDto(request);
-        return sendRequest(HttpMethod.POST, "/hit", null, dto);
+        sendRequest(HttpMethod.POST, "/hit", null, dto);
     }
 
     public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
@@ -91,10 +89,6 @@ public class StatsClient {
                 .ip(request.getRemoteAddr())
                 .timestamp(LocalDateTime.now())
                 .build();
-    }
-
-    private String encode(String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 
     private HttpHeaders buildDefaultHeaders() {
