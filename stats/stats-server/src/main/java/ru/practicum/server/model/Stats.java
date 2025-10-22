@@ -33,10 +33,4 @@ public class Stats {
     private LocalDateTime timestamp;
 
     private int hits;
-
-    public Stats(String app, String uri, int hits) {
-        this.app = app;
-        this.uri = uri;
-        this.hits = hits;
-    }
 }

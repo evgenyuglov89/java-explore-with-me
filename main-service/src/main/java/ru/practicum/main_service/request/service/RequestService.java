@@ -110,6 +110,8 @@ public class RequestService {
             if (request.getStatus().equals(RequestState.CONFIRMED)) {
                 r.setStatus(RequestState.CONFIRMED);
                 result.getConfirmedRequests().add(requestMapper.toRequestDto(r));
+                event.setConfirmedRequests(event.getConfirmedRequests() + 1);
+                eventRepository.save(event);
             } else {
                 r.setStatus(RequestState.REJECTED);
                 result.getRejectedRequests().add(requestMapper.toRequestDto(r));
@@ -143,9 +145,13 @@ public class RequestService {
         if (event.getParticipantLimit() == 0) {
             event.setConfirmedRequests(event.getConfirmedRequests() + 1);
             eventRepository.save(event);
+
             return RequestState.CONFIRMED;
         }
-        return event.isRequestModeration() ? RequestState.PENDING : RequestState.CONFIRMED;
+
+        RequestState state = event.isRequestModeration() ? RequestState.PENDING : RequestState.CONFIRMED;
+
+        return state;
     }
 
     private void validateConfirmationPossible(Event event) {

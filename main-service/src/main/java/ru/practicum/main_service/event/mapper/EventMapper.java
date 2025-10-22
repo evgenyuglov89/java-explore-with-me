@@ -7,10 +7,7 @@ import ru.practicum.main_service.event.dto.EventCreateDto;
 import ru.practicum.main_service.event.dto.EventDto;
 import ru.practicum.main_service.event.dto.EventShortDto;
 import ru.practicum.main_service.event.model.Event;
-import ru.practicum.main_service.request.model.Request;
 import ru.practicum.main_service.user.mapper.UserMapper;
-
-import java.util.ArrayList;
 
 @Component
 @AllArgsConstructor
@@ -18,31 +15,13 @@ public class EventMapper {
     private final UserMapper userMapper;
     private final CategoryMapper categoryMapper;
 
-
-    public Event fromEventDto(EventDto dto) {
-        return Event.builder()
-                .location(dto.getLocation())
-                .eventDate(dto.getEventDate())
-                .id(dto.getId())
-                .state(dto.getState())
-                .title(dto.getTitle())
-                .views(dto.getViews())
-                .paid(dto.isPaid())
-                .initiator(userMapper.fromUserDto(dto.getInitiator()))
-                .description(dto.getDescription())
-                .publishedOn(dto.getPublishedOn())
-                .participantLimit(dto.getParticipantLimit())
-                .annotation(dto.getAnnotation())
-                .build();
-    }
-
     public EventDto toEventDto(Event event) {
         return EventDto
                 .builder()
                 .location(event.getLocation())
                 .category(categoryMapper.toCategoryDto(event.getCategory()))
                 .eventDate(event.getEventDate())
-                .confirmedRequests(new ArrayList<Request>().size())
+                .confirmedRequests(event.getConfirmedRequests())
                 .id(event.getId())
                 .state(event.getState())
                 .title(event.getTitle())

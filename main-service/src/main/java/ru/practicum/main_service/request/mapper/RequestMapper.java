@@ -15,11 +15,4 @@ public class RequestMapper {
                 .created(request.getCreated())
                 .build();
     }
-
-    public Request fromRequestDto(RequestDto dto) {
-        return Request.builder()
-                .status(dto.getStatus())
-                .created(dto.getCreated())
-                .build();
-    }
 }
