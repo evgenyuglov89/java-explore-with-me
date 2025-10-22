@@ -3,7 +3,6 @@ package ru.practicum.main_service.event.service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_service.admin.service.EventAdminService;
 import ru.practicum.main_service.event.dto.EventDto;
@@ -51,9 +50,7 @@ public class EventPublicService {
     public List<EventShortDto> getAllEvents(EventSearchFilter filter, HttpServletRequest request) {
         statsService.saveStats(request);
 
-        List<Event> events = repository.findAll(PageRequest.of(filter.getFrom() / filter.getSize(),
-                        filter.getSize()))
-                .stream()
+        List<Event> events = repository.findAll().stream()
                 .filter(e -> e.getState() == EventState.PUBLISHED)
                 .collect(Collectors.toList());
 
@@ -61,18 +58,33 @@ public class EventPublicService {
 
         events = sortEvents(events, filter.getSort());
 
-        return events.stream()
+        int from = Math.max(0, filter.getFrom());
+        int size = Math.max(1, filter.getSize());
+        int start = Math.min(from, events.size());
+        int end = Math.min(start + size, events.size());
+        List<Event> page = events.subList(start, end);
+
+        return page.stream()
                 .map(mapper::toEventSmallDto)
                 .collect(Collectors.toList());
     }
 
     private List<Event> applyFilters(List<Event> events, EventSearchFilter f) {
-        return events.stream()
+        List<Event> afterText = events.stream()
                 .filter(e -> f.getText() == null ||
                         e.getAnnotation().toLowerCase().contains(f.getText().toLowerCase()) ||
                         e.getDescription().toLowerCase().contains(f.getText().toLowerCase()))
+                .toList();
+
+        List<Event> afterCategories = afterText.stream()
                 .filter(e -> f.getCategories() == null || f.getCategories().contains(e.getCategory().getId()))
+                .toList();
+
+        List<Event> afterPaid = afterCategories.stream()
                 .filter(e -> f.getPaid() == null || e.isPaid() == f.getPaid())
+                .toList();
+
+        List<Event> afterDate = afterPaid.stream()
                 .filter(e -> {
                     LocalDateTime start = f.getRangeStart() != null ? f.getRangeStart() : LocalDateTime.now();
                     LocalDateTime end = f.getRangeEnd();
@@ -80,9 +92,12 @@ public class EventPublicService {
                     return e.getEventDate().isAfter(start) &&
                             (end == null || e.getEventDate().isBefore(end));
                 })
+                .toList();
+
+        return afterDate.stream()
                 .filter(e -> !Boolean.TRUE.equals(f.getOnlyAvailable()) ||
                         e.getConfirmedRequests() < e.getParticipantLimit())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<Event> sortEvents(List<Event> events, String sort) {

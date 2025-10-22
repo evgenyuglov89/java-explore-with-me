@@ -130,6 +130,13 @@ public class RequestService {
         if (requestRepository.existsByRequester_IdAndEvent_Id(userId, event.getId())) {
             throw new ConflictRequestException("Запрос уже существует");
         }
+
+        int confirmedRequests = requestRepository.countByEvent_IdAndStatus(event.getId(), RequestState.CONFIRMED);
+        int participantLimit = event.getParticipantLimit();
+
+        if (participantLimit > 0 && confirmedRequests >= participantLimit) {
+            throw new ConflictRequestException("Лимит участников достигнут");
+        }
     }
 
     private RequestState determineRequestState(Event event) {

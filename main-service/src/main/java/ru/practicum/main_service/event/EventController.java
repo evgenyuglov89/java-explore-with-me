@@ -11,6 +11,7 @@ import ru.practicum.main_service.event.dto.EventDto;
 import ru.practicum.main_service.event.dto.EventSearchFilter;
 import ru.practicum.main_service.event.dto.EventShortDto;
 import ru.practicum.main_service.event.service.EventPublicService;
+import ru.practicum.main_service.exeption.IncorrectRequestException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,6 +46,9 @@ public class EventController {
             @RequestParam(defaultValue = "10") int size,
             HttpServletRequest request
     ) {
+        if (rangeStart != null && rangeEnd != null && rangeStart.isAfter(rangeEnd)) {
+            throw new IncorrectRequestException("rangeStart не может быть позже rangeEnd");
+        }
 
         EventSearchFilter filter = new EventSearchFilter(
                 text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size
