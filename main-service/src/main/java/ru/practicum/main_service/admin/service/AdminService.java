@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.main_service.category.dto.CategoryDto;
 import ru.practicum.main_service.category.model.Category;
 import ru.practicum.main_service.compilation.dto.CompilationDto;
+import ru.practicum.main_service.compilation.dto.NewCompilationDto;
 import ru.practicum.main_service.compilation.dto.UpdateCompilationDto;
 import ru.practicum.main_service.event.dto.EventAdminDto;
 import ru.practicum.main_service.event.dto.EventDto;
@@ -60,7 +61,7 @@ public class AdminService {
         compilationAdminService.deleteCompilation(compId);
     }
 
-    public CompilationDto addCompilation(UpdateCompilationDto dto) {
+    public CompilationDto addCompilation(NewCompilationDto dto) {
         return compilationAdminService.addCompilation(dto);
     }
 

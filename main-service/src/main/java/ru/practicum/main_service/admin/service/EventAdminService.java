@@ -34,8 +34,14 @@ public class EventAdminService {
     private final LocationMapper locationMapper;
     private final UserService userService;
 
-    public List<EventDto> getEvents(List<Integer> usersIds, List<String> states, List<Integer> categories,
-                                    LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
+    public List<EventDto> getEvents(
+            List<Integer> usersIds,
+            List<String> states,
+            List<Integer> categories,
+            LocalDateTime rangeStart,
+            LocalDateTime rangeEnd,
+            int from,
+            int size) {
 
         List<Event> events = eventRepository.findAll(PageRequest.of(from / size, size)).toList();
 
@@ -43,17 +49,20 @@ public class EventAdminService {
 
         if (rangeStart != null && rangeEnd != null) {
             validateTimeRange(rangeStart, rangeEnd);
-            stream = stream.filter(e -> e.getEventDate().isAfter(rangeStart) && e.getEventDate().isBefore(rangeEnd));
+            stream = stream.filter(e -> !e.getEventDate().isBefore(rangeStart) && !e.getEventDate().isAfter(rangeEnd));
         }
 
-        if (usersIds != null && !usersIds.isEmpty())
+        if (usersIds != null && !usersIds.isEmpty()) {
             stream = stream.filter(e -> usersIds.contains(e.getInitiator().getId()));
+        }
 
-        if (states != null && !states.isEmpty())
-            stream = stream.filter(e -> states.contains(e.getState()));
+        if (states != null && !states.isEmpty()) {
+            stream = stream.filter(e -> states.contains(e.getState().name()));
+        }
 
-        if (categories != null && !categories.isEmpty())
+        if (categories != null && !categories.isEmpty()) {
             stream = stream.filter(e -> categories.contains(e.getCategory().getId()));
+        }
 
         return stream.map(eventMapper::toEventDto).toList();
     }
@@ -106,6 +115,10 @@ public class EventAdminService {
     }
 
     private void applyStateChange(Event event, StateAdminAction action) {
+        if (action == null) {
+            return;
+        }
+
         switch (action) {
             case REJECT_EVENT -> event.setState(EventState.CANCELED);
             case PUBLISH_EVENT -> {

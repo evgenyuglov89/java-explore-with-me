@@ -19,5 +19,4 @@ public class RequestStatusUpdateResultDto {
         this.confirmedRequests = new ArrayList<>();
         this.rejectedRequests = new ArrayList<>();
     }
-
 }

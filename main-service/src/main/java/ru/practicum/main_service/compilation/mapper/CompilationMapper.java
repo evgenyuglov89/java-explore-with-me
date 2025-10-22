@@ -3,7 +3,7 @@ package ru.practicum.main_service.compilation.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.main_service.compilation.dto.CompilationDto;
-import ru.practicum.main_service.compilation.dto.UpdateCompilationDto;
+import ru.practicum.main_service.compilation.dto.NewCompilationDto;
 import ru.practicum.main_service.compilation.model.Compilation;
 import ru.practicum.main_service.event.mapper.EventMapper;
 
@@ -15,7 +15,7 @@ public class CompilationMapper {
 
     private final EventMapper eventMapper;
 
-    public Compilation fromCompilationNewDto(UpdateCompilationDto dto) {
+    public Compilation fromCompilationNewDto(NewCompilationDto dto) {
         Boolean pinned = (dto.getPinned() != null) ? dto.getPinned() : false;
 
         return Compilation.builder()

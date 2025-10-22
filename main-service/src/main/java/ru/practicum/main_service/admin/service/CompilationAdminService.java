@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.main_service.compilation.dto.CompilationDto;
+import ru.practicum.main_service.compilation.dto.NewCompilationDto;
 import ru.practicum.main_service.compilation.dto.UpdateCompilationDto;
 import ru.practicum.main_service.compilation.mapper.CompilationMapper;
 import ru.practicum.main_service.compilation.model.Compilation;
@@ -21,7 +22,7 @@ public class CompilationAdminService {
     private final EventRepository eventRepository;
 
     @Transactional
-    public CompilationDto addCompilation(UpdateCompilationDto dto) {
+    public CompilationDto addCompilation(NewCompilationDto dto) {
         validateTitle(dto.getTitle());
         Compilation compilation = compilationMapper.fromCompilationNewDto(dto);
 
@@ -44,7 +45,10 @@ public class CompilationAdminService {
         validateTitle(dto.getTitle());
         Compilation compilation = getCompilation(id);
 
-        compilation.setTitle(dto.getTitle());
+        if (dto.getTitle() != null) {
+            compilation.setTitle(dto.getTitle());
+        }
+
         if (dto.getPinned() != null) compilation.setPinned(dto.getPinned());
         if (dto.getEvents() != null)
             compilation.setEvents(eventRepository.findAllById(dto.getEvents()));

@@ -9,6 +9,7 @@ import ru.practicum.main_service.admin.service.AdminService;
 import ru.practicum.main_service.category.dto.CategoryDto;
 import ru.practicum.main_service.category.model.Category;
 import ru.practicum.main_service.compilation.dto.CompilationDto;
+import ru.practicum.main_service.compilation.dto.NewCompilationDto;
 import ru.practicum.main_service.compilation.dto.UpdateCompilationDto;
 import ru.practicum.main_service.event.dto.EventAdminDto;
 import ru.practicum.main_service.event.dto.EventDto;
@@ -89,7 +90,7 @@ public class AdminController {
 
     @PostMapping("/compilations")
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto addCompilation(@RequestBody @Valid UpdateCompilationDto dto) {
+    public CompilationDto addCompilation(@RequestBody @Valid NewCompilationDto dto) {
         return service.addCompilation(dto);
     }
 

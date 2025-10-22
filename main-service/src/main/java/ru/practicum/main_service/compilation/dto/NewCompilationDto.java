@@ -1,5 +1,6 @@
 package ru.practicum.main_service.compilation.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +13,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateCompilationDto {
-    @Size(max = 50)
+public class NewCompilationDto {
+    @NotBlank
+    @Size(min = 3, max = 50)
     private String title;
 
     private Boolean pinned;
