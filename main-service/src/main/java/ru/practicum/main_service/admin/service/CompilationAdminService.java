@@ -13,26 +13,27 @@ import ru.practicum.main_service.event.repository.EventRepository;
 import ru.practicum.main_service.exeption.CompilationNotFoundException;
 import ru.practicum.main_service.exeption.ConflictRequestException;
 
+import java.util.HashSet;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CompilationAdminService {
 
     private final CompilationRepository compilationRepository;
     private final CompilationMapper compilationMapper;
     private final EventRepository eventRepository;
 
-    @Transactional
     public CompilationDto addCompilation(NewCompilationDto dto) {
         validateTitle(dto.getTitle());
         Compilation compilation = compilationMapper.fromCompilationNewDto(dto);
 
         if (dto.getEvents() != null)
-            compilation.setEvents(eventRepository.findAllById(dto.getEvents()));
+            compilation.setEvents(new HashSet<>(eventRepository.findAllById(dto.getEvents())));
 
         return compilationMapper.toCompilationBigDto(compilationRepository.save(compilation));
     }
 
-    @Transactional
     public void deleteCompilation(int id) {
         if (!compilationRepository.existsById(id)) {
             throw new CompilationNotFoundException("Подборка с id " + id + " не найдена");
@@ -40,7 +41,6 @@ public class CompilationAdminService {
         compilationRepository.deleteById(id);
     }
 
-    @Transactional
     public CompilationDto updateCompilation(int id, UpdateCompilationDto dto) {
         validateTitle(dto.getTitle());
         Compilation compilation = getCompilation(id);
@@ -51,7 +51,7 @@ public class CompilationAdminService {
 
         if (dto.getPinned() != null) compilation.setPinned(dto.getPinned());
         if (dto.getEvents() != null)
-            compilation.setEvents(eventRepository.findAllById(dto.getEvents()));
+            compilation.setEvents(new HashSet<>(eventRepository.findAllById(dto.getEvents())));
 
         return compilationMapper.toCompilationBigDto(compilationRepository.save(compilation));
     }

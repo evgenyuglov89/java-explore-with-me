@@ -1,15 +1,14 @@
 package ru.practicum.main_service.request.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Builder
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class RequestStatusUpdateResultDto {
 
     private final List<RequestDto> confirmedRequests;

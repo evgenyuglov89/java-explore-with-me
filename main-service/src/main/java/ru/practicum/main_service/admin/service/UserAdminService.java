@@ -16,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserAdminService {
 
     private final UserRepository userRepository;
@@ -28,7 +29,6 @@ public class UserAdminService {
                 : userRepository.findAll(pageable).getContent();
     }
 
-    @Transactional
     public User addUser(UserDto dto) {
         if (userRepository.existsByEmailIgnoreCase(dto.getEmail())) {
             throw new ConflictRequestException("Пользователь с таким email уже существует");
@@ -36,7 +36,6 @@ public class UserAdminService {
         return userRepository.save(userMapper.fromUserDto(dto));
     }
 
-    @Transactional
     public void deleteUser(int id) {
         if (!userRepository.existsById(id)) {
             throw new UserNotFoundException("Пользователь с id " + id + " не найден");

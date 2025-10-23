@@ -16,6 +16,8 @@ import ru.practicum.main_service.exeption.IncorrectRequestException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.practicum.main_service.consts.Consts.DATE_FORMAT;
+
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -37,9 +39,9 @@ public class EventController {
             @RequestParam(required = false) List<Integer> categories,
             @RequestParam(required = false) Boolean paid,
             @RequestParam(required = false)
-            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
+            @DateTimeFormat(pattern = DATE_FORMAT) LocalDateTime rangeStart,
             @RequestParam(required = false)
-            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
+            @DateTimeFormat(pattern = DATE_FORMAT) LocalDateTime rangeEnd,
             @RequestParam(defaultValue = "false") Boolean onlyAvailable,
             @RequestParam(required = false) String sort,
             @RequestParam(defaultValue = "0") int from,

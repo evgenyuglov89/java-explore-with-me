@@ -8,7 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Data
+@Getter
+@Setter
 @Table(name = "locations")
 public class Location {
     @Id

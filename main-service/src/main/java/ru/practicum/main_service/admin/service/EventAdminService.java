@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EventAdminService {
 
     private final EventRepository eventRepository;
@@ -74,7 +75,6 @@ public class EventAdminService {
             throw new IncorrectRequestException("Начало и конец диапазона совпадают");
     }
 
-    @Transactional
     public EventDto eventAdministration(int eventId, EventAdminDto dto) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventNotFoundException("Событие с id " + eventId + " не найдено"));

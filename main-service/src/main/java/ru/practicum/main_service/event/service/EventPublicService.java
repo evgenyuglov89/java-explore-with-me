@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EventPublicService {
 
     private final EventRepository repository;
@@ -35,7 +36,6 @@ public class EventPublicService {
                 .orElseThrow(() -> new EventNotFoundException("Событие с id " + id + " не найдено"));
 
         if (event.getState() != EventState.PUBLISHED) {
-
             throw new EventNotFoundException("Событие с id " + id + " не опубликовано");
         }
 
@@ -46,7 +46,6 @@ public class EventPublicService {
         return mapper.toEventDto(event);
     }
 
-    @Transactional
     public List<EventShortDto> getAllEvents(EventSearchFilter filter, HttpServletRequest request) {
         statsService.saveStats(request);
 

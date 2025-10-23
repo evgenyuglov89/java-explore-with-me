@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RequestService {
 
     private final UserRepository userRepository;
@@ -37,7 +38,6 @@ public class RequestService {
         return requests.stream().map(requestMapper::toRequestDto).collect(Collectors.toList());
     }
 
-    @Transactional
     public RequestDto addRequest(int userId, int eventId) {
         User requester = getUserById(userId);
         Event event = getEventById(eventId);
@@ -54,7 +54,6 @@ public class RequestService {
         return requestMapper.toRequestDto(requestRepository.save(request));
     }
 
-    @Transactional
     public RequestDto cancelRequest(int userId, int requestId) {
         Request request = getRequestById(requestId);
         User requester = getUserById(userId);
@@ -80,7 +79,6 @@ public class RequestService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public RequestStatusUpdateResultDto changeRequestStatus(int userId, int eventId,
                                                             RequestStatusUpdateRequestDto request) {
         getUserById(userId);
@@ -149,9 +147,7 @@ public class RequestService {
             return RequestState.CONFIRMED;
         }
 
-        RequestState state = event.isRequestModeration() ? RequestState.PENDING : RequestState.CONFIRMED;
-
-        return state;
+        return event.isRequestModeration() ? RequestState.PENDING : RequestState.CONFIRMED;
     }
 
     private void validateConfirmationPossible(Event event) {

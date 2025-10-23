@@ -3,19 +3,19 @@ package ru.practicum.main_service.event.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.main_service.event.model.StateAdminAction;
 import ru.practicum.main_service.location.dto.LocationDto;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.main_service.consts.Consts.DATE_FORMAT;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class EventAdminDto {
     @Size(min = 3, max = 120)
     private String title;
@@ -32,7 +32,7 @@ public class EventAdminDto {
 
     private Boolean paid;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime eventDate;
 
     @PositiveOrZero

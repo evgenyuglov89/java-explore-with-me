@@ -19,6 +19,8 @@ import ru.practicum.main_service.user.model.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.practicum.main_service.consts.Consts.DATE_FORMAT;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -68,9 +70,9 @@ public class AdminController {
                                     @RequestParam(required = false) List<String> states,
                                     @RequestParam(required = false) List<Integer> categories,
                                     @RequestParam(required = false)
-                                    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
+                                    @DateTimeFormat(pattern = DATE_FORMAT) LocalDateTime rangeStart,
                                     @RequestParam(required = false)
-                                    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
+                                    @DateTimeFormat(pattern = DATE_FORMAT) LocalDateTime rangeEnd,
                                     @RequestParam(defaultValue = "0") int from,
                                     @RequestParam(defaultValue = "10") int size) {
         return service.getEvents(users, states, categories, rangeStart, rangeEnd, from, size);

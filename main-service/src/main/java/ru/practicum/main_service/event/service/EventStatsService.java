@@ -19,6 +19,7 @@ import java.util.List;
 public class EventStatsService {
 
     private final StatsClient statsClient;
+    private final ObjectMapper objectMapper;
 
     public void saveStats(HttpServletRequest request) {
         try {
@@ -40,8 +41,7 @@ public class EventStatsService {
             return 0;
         }
 
-        ObjectMapper mapper = new ObjectMapper();
-        List<ViewStatsDto> stats = mapper.convertValue(response.getBody(), new TypeReference<List<ViewStatsDto>>() {});
+        List<ViewStatsDto> stats = objectMapper.convertValue(response.getBody(), new TypeReference<List<ViewStatsDto>>() {});
 
         return stats.isEmpty() ? 0 : stats.get(0).getHits();
     }

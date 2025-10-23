@@ -3,10 +3,7 @@ package ru.practicum.main_service.event.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.main_service.category.dto.CategoryDto;
 import ru.practicum.main_service.event.model.EventState;
 import ru.practicum.main_service.location.model.Location;
@@ -14,8 +11,11 @@ import ru.practicum.main_service.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.main_service.consts.Consts.DATE_FORMAT;
+
 @Builder
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventDto {
@@ -41,15 +41,15 @@ public class EventDto {
     private boolean paid;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime createdOn;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime publishedOn;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime eventDate;
 
     private int confirmedRequests;

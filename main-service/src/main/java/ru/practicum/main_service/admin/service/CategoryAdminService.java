@@ -13,13 +13,13 @@ import ru.practicum.main_service.exeption.ConflictRequestException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CategoryAdminService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final EventRepository eventRepository;
 
-    @Transactional
     public Category addCategory(CategoryDto dto) {
         if (categoryRepository.existsByNameIgnoreCase(dto.getName())) {
             throw new ConflictRequestException("Имя категории должно быть уникальным");
@@ -29,7 +29,6 @@ public class CategoryAdminService {
         return categoryRepository.save(category);
     }
 
-    @Transactional
     public void deleteCategory(int id) {
         if (eventRepository.existsByCategoryId(id)) {
             throw new ConflictRequestException("Нельзя удалить категорию, к которой привязаны события");
@@ -41,7 +40,6 @@ public class CategoryAdminService {
         categoryRepository.delete(category);
     }
 
-    @Transactional
     public Category editCategory(int id, CategoryDto dto) {
         Category existing = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Категория с id " + id + " не найдена"));

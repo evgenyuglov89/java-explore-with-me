@@ -1,9 +1,6 @@
 package ru.practicum.main_service.request.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.main_service.request.model.RequestState;
 
 import java.util.List;
@@ -11,7 +8,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class RequestStatusUpdateRequestDto {
     private RequestState status;
 

@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -36,7 +37,6 @@ public class UserService {
     private final LocationRepository locationRepository;
     private final EventMapper eventMapper;
 
-    @Transactional
     public EventDto createEvent(int userId, EventCreateDto eventDto) {
         checkEventDate(eventDto.getEventDate());
 
@@ -70,7 +70,6 @@ public class UserService {
         return eventMapper.toEventDto(event);
     }
 
-    @Transactional
     public EventDto changeEvent(int userId, int eventId, EventUpdateDto dto) {
         if (dto.getEventDate() != null) checkEventDate(dto.getEventDate());
 

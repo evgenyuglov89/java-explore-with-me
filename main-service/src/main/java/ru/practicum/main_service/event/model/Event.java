@@ -3,10 +3,7 @@ package ru.practicum.main_service.event.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.main_service.category.model.Category;
 import ru.practicum.main_service.location.model.Location;
 import ru.practicum.main_service.user.model.User;
@@ -14,7 +11,8 @@ import ru.practicum.main_service.user.model.User;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

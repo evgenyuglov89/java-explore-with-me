@@ -17,13 +17,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import static ru.practicum.dto.EndpointHitDto.DATE_FORMAT;
+
 @Service
 public class StatsClient {
 
     private final RestTemplate restTemplate;
     private static final String APP_NAME = "ewm-main-service";
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public StatsClient(
             RestTemplateBuilder builder,
