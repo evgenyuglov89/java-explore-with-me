@@ -2,7 +2,6 @@ package ru.practicum.server.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.practicum.dto.EndpointHitDto;
-import ru.practicum.dto.ViewStatsDto;
 import ru.practicum.server.model.Stats;
 
 @Component
@@ -19,22 +18,13 @@ public class StatsMapper {
                 .build();
     }
 
-    public ViewStatsDto toStatForListDto(Stats stat) {
-        return ViewStatsDto
-                .builder()
-                .app(stat.getApp())
-                .hits(stat.getHits())
-                .uri(stat.getUri())
-                .build();
-    }
-
     public Stats fromStatisticsDto(EndpointHitDto dto) {
         return Stats.builder()
                 .app(dto.getApp())
                 .uri(dto.getUri())
                 .ip(dto.getIp())
                 .timestamp(dto.getTimestamp())
-                .hits(1L)
+                .hits(1)
                 .build();
     }
 }

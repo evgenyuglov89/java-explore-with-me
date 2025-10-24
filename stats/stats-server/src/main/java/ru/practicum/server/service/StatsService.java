@@ -14,13 +14,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class StatsService {
 
     private final StatsMapper mapper;
     private final StatsRepository repository;
 
-    @Transactional
     public EndpointHitDto create(EndpointHitDto dto) {
         Stats stat = mapper.fromStatisticsDto(dto);
 

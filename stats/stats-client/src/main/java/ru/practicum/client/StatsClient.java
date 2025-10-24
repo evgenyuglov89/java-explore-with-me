@@ -12,43 +12,49 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import ru.practicum.dto.EndpointHitDto;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+
+import static ru.practicum.dto.EndpointHitDto.DATE_FORMAT;
 
 @Service
 public class StatsClient {
 
     private final RestTemplate restTemplate;
-    private final String baseUrl;
     private static final String APP_NAME = "ewm-main-service";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public StatsClient(
             RestTemplateBuilder builder,
             @Value("${stats.server.url:http://localhost:9090}") String baseUrl
     ) {
-        this.baseUrl = baseUrl;
         this.restTemplate = builder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(baseUrl))
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                 .build();
     }
 
-    public ResponseEntity<Object> postStats(HttpServletRequest request) {
+    public void postStats(HttpServletRequest request) {
         EndpointHitDto dto = buildStatisticsDto(request);
-        return sendRequest(HttpMethod.POST, "/hit", null, dto);
+        sendRequest(HttpMethod.POST, "/hit", null, dto);
     }
 
     public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
+        validateDateRange(start, end);
+
         Map<String, Object> params = Map.of(
-                "start", encode(start.toString()),
-                "end", encode(end.toString()),
+                "start", formatDate(start),
+                "end", formatDate(end),
                 "uris", uris,
                 "unique", unique
         );
-        return sendRequest(HttpMethod.GET, "/stats?start={start}&end={end}&uris={uris}&unique={unique}", params, null);
+
+        String url = "/stats?start={start}&end={end}&uris={uris}&unique={unique}";
+
+        return sendRequest(HttpMethod.GET, url, params, null);
     }
 
     private <T> ResponseEntity<Object> sendRequest(HttpMethod method, String path,
@@ -77,10 +83,6 @@ public class StatsClient {
                 .build();
     }
 
-    private String encode(String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
-    }
-
     private HttpHeaders buildDefaultHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -94,5 +96,15 @@ public class StatsClient {
         }
         ResponseEntity.BodyBuilder builder = ResponseEntity.status(response.getStatusCode());
         return response.hasBody() ? builder.body(response.getBody()) : builder.build();
+    }
+
+    private String formatDate(LocalDateTime dateTime) {
+        return dateTime.format(DATE_TIME_FORMATTER);
+    }
+
+    private void validateDateRange(LocalDateTime start, LocalDateTime end) {
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("Дата начала не может быть позже даты окончания");
+        }
     }
 }
