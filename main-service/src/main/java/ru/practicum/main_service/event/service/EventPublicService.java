@@ -32,7 +32,7 @@ public class EventPublicService {
     public EventDto getEventById(int id, HttpServletRequest request) {
         statsService.saveStats(request);
 
-        Event event = repository.findById(id)
+        Event event = repository.findByIdWithComments(id)
                 .orElseThrow(() -> new EventNotFoundException("Событие с id " + id + " не найдено"));
 
         if (event.getState() != EventState.PUBLISHED) {
@@ -49,12 +49,11 @@ public class EventPublicService {
     public List<EventShortDto> getAllEvents(EventSearchFilter filter, HttpServletRequest request) {
         statsService.saveStats(request);
 
-        List<Event> events = repository.findAll().stream()
+        List<Event> events = repository.findAllWithComments().stream()
                 .filter(e -> e.getState() == EventState.PUBLISHED)
                 .collect(Collectors.toList());
 
         events = applyFilters(events, filter);
-
         events = sortEvents(events, filter.getSort());
 
         int from = Math.max(0, filter.getFrom());
@@ -69,21 +68,12 @@ public class EventPublicService {
     }
 
     private List<Event> applyFilters(List<Event> events, EventSearchFilter f) {
-        List<Event> afterText = events.stream()
+        return events.stream()
                 .filter(e -> f.getText() == null ||
                         e.getAnnotation().toLowerCase().contains(f.getText().toLowerCase()) ||
                         e.getDescription().toLowerCase().contains(f.getText().toLowerCase()))
-                .toList();
-
-        List<Event> afterCategories = afterText.stream()
                 .filter(e -> f.getCategories() == null || f.getCategories().contains(e.getCategory().getId()))
-                .toList();
-
-        List<Event> afterPaid = afterCategories.stream()
                 .filter(e -> f.getPaid() == null || e.isPaid() == f.getPaid())
-                .toList();
-
-        List<Event> afterDate = afterPaid.stream()
                 .filter(e -> {
                     LocalDateTime start = f.getRangeStart() != null ? f.getRangeStart() : LocalDateTime.now();
                     LocalDateTime end = f.getRangeEnd();
@@ -91,9 +81,6 @@ public class EventPublicService {
                     return e.getEventDate().isAfter(start) &&
                             (end == null || e.getEventDate().isBefore(end));
                 })
-                .toList();
-
-        return afterDate.stream()
                 .filter(e -> !Boolean.TRUE.equals(f.getOnlyAvailable()) ||
                         e.getConfirmedRequests() < e.getParticipantLimit())
                 .toList();

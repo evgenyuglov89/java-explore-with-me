@@ -36,4 +36,6 @@ public class EventShortDto {
     private int confirmedRequests;
 
     private EventState state;
+
+    private int commentsCount;
 }

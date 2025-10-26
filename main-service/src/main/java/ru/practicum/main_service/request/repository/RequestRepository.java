@@ -6,6 +6,7 @@ import ru.practicum.main_service.request.model.Request;
 import ru.practicum.main_service.request.model.RequestState;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RequestRepository extends JpaRepository<Request, Integer> {
     List<Request> findByRequester_Id(int userId, PageRequest pageRequest);
@@ -15,4 +16,6 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
     int countByEvent_IdAndStatus(int eventId, RequestState status);
 
     boolean existsByRequester_IdAndEvent_Id(int userId, int eventId);
+
+    Optional<Request> findByIdAndRequesterId(int requestId, int userId);
 }
