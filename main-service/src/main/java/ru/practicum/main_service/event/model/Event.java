@@ -5,10 +5,13 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import ru.practicum.main_service.category.model.Category;
+import ru.practicum.main_service.comment.model.Comment;
 import ru.practicum.main_service.location.model.Location;
 import ru.practicum.main_service.user.model.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -71,4 +74,6 @@ public class Event {
 
     private int confirmedRequests;
 
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
 }

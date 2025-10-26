@@ -3,17 +3,21 @@ package ru.practicum.main_service.event.mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.main_service.category.mapper.CategoryMapper;
+import ru.practicum.main_service.comment.mapper.CommentMapper;
 import ru.practicum.main_service.event.dto.EventCreateDto;
 import ru.practicum.main_service.event.dto.EventDto;
 import ru.practicum.main_service.event.dto.EventShortDto;
 import ru.practicum.main_service.event.model.Event;
 import ru.practicum.main_service.user.mapper.UserMapper;
 
+import java.util.Collections;
+
 @Component
 @AllArgsConstructor
 public class EventMapper {
     private final UserMapper userMapper;
     private final CategoryMapper categoryMapper;
+    private final CommentMapper commentMapper;
 
     public EventDto toEventDto(Event event) {
         return EventDto
@@ -34,6 +38,11 @@ public class EventMapper {
                 .publishedOn(event.getPublishedOn())
                 .participantLimit(event.getParticipantLimit())
                 .annotation(event.getAnnotation())
+                .comments(
+                        commentMapper.toDtoList(
+                                event.getComments() != null ? event.getComments() : Collections.emptyList()
+                        )
+                )
                 .build();
     }
 
@@ -58,6 +67,7 @@ public class EventMapper {
                 .initiator(userMapper.toUserDto(event.getInitiator()))
                 .views(event.getViews())
                 .paid(event.isPaid())
+                .commentsCount(event.getComments() != null ? event.getComments().size() : 0)
                 .build();
     }
 }

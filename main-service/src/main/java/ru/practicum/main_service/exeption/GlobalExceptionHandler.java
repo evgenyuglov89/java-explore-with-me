@@ -38,6 +38,11 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(HttpStatus.NOT_FOUND, "Подборка не найдена", ex, request);
     }
 
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCommentNotFound(CommentNotFoundException ex, WebRequest request) {
+        return buildResponseEntity(HttpStatus.NOT_FOUND, "Комментарий не найден", ex, request);
+    }
+
     @ExceptionHandler(ConflictRequestException.class)
     public ResponseEntity<ErrorResponse> handleConflictRequest(ConflictRequestException ex, WebRequest request) {
         return buildResponseEntity(HttpStatus.CONFLICT, "Конфликт с текущим состоянием сервера", ex, request);

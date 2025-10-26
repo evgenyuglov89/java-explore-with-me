@@ -5,11 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import ru.practicum.main_service.category.dto.CategoryDto;
+import ru.practicum.main_service.comment.dto.CommentDto;
 import ru.practicum.main_service.event.model.EventState;
 import ru.practicum.main_service.location.model.Location;
 import ru.practicum.main_service.user.dto.UserDto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ru.practicum.main_service.consts.Consts.DATE_FORMAT;
 
@@ -66,4 +69,6 @@ public class EventDto {
     private EventState state;
 
     private int views;
+
+    private List<CommentDto> comments = new ArrayList<>();
 }
