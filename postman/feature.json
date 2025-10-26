@@ -74,7 +74,7 @@
 					"listen": "test",
 					"script": [
 						"pm.test('Event created', () => pm.response.to.have.status(201));",
-						"let data = pm.response.json(); pm.variables.set('eventId', data.id);"
+						"let eventResponse = pm.response.json(); pm.variables.set('eventId', eventResponse.id);"
 					]
 				}
 			],
@@ -157,7 +157,7 @@
 					"listen": "test",
 					"script": [
 						"pm.test('Comment created', () => pm.response.to.have.status(201));",
-						"let data = pm.response.json(); pm.variables.set('commentId', data.id);"
+						"let commentResponse = pm.response.json(); pm.variables.set('commentId', commentResponse.id);"
 					]
 				}
 			],
